@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Management Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-page">
+    <main class="card-container dashboard-container">
+        <header class="dashboard-header">
+            <div>
+                <h1>Pet Management</h1>
+                <p class="dashboard-subtitle">Database overview</p>
+            </div>
+            <a href="index.html">Sign out</a>
+        </header>
+        <section aria-labelledby="tables-heading">
+            <h2 id="tables-heading">Database tables</h2>
+            <div class="table-list">
+                <details class="table-card">
+                    <summary><strong>PETS</strong><span>Pet records, owners, names, and types.</span></summary>
+                    <p class="table-columns"><strong>Columns:</strong> <code>Pet_Id</code>, <code>PetOwner_Id</code>, <code>Pet_Name</code>, <code>Pet_Type</code></p>
+                </details>
+                <details class="table-card">
+                    <summary><strong>Grooming_Request</strong><span>Grooming appointments and contact phone numbers.</span></summary>
+                    <p class="table-columns"><strong>Columns:</strong> <code>Appointment_Id</code>, <code>ContactPhone</code></p>
+                </details>
+                <details class="table-card">
+                    <summary><strong>Session_</strong><span>Staff sessions and the pets they serve.</span></summary>
+                    <p class="table-columns"><strong>Columns:</strong> <code>Staff_Name</code>, <code>Session_Id</code>, <code>Session_name</code>, <code>Session_No</code>, <code>Pet_Id</code></p>
+                </details>
+                <details class="table-card">
+                    <summary><strong>REPORT</strong><span>Session reports, dates, and descriptions.</span></summary>
+                    <p class="table-columns"><strong>Columns:</strong> <code>Session_ID</code>, <code>Report_ID</code>, <code>Report_Date</code>, <code>Report_Description</code></p>
+                </details>
+                <details class="table-card">
+                    <summary><strong>Medication_Log</strong><span>Medication names, dosages, and pet records.</span></summary>
+                    <p class="table-columns"><strong>Columns:</strong> <code>Medication_Id</code>, <code>Medication_Name</code>, <code>Dosage</code>, <code>Pet_Id</code></p>
+                </details>
+                <details class="table-card">
+                    <summary><strong>Staff</strong><span>Staff names and roles.</span></summary>
+                    <p class="table-columns"><strong>Columns:</strong> <code>Staff_Id</code>, <code>Staff_Name</code>, <code>Staff_Type</code></p>
+                </details>
+                <details class="table-card">
+                    <summary><strong>Users</strong><span>Application login accounts.</span></summary>
+                    <p class="table-columns"><strong>Columns:</strong> <code>User_Id</code>, <code>Username</code>, <code>Password</code></p>
+                </details>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
