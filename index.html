@@ -3,39 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PET MANAGEMENT DATABASE- LOGIN</title>
+    <meta name="theme-color" content="#f2f3f4">
+    <title>Petcare — Sign in</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-
-    <div class="card-container">
-        <!-- Login Form -->
-        <form id="loginForm">
-            <h2>System Login</h2>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" required placeholder="Enter username">
+<body class="login-page">
+    <main class="login-layout">
+        <section class="login-story" aria-label="Petcare">
+            <a class="login-brand" href="index.html">
+                <span class="brand-icon" aria-hidden="true">P</span>
+                <span>petcare<span class="brand-period">.</span></span>
+            </a>
+            <div class="story-copy">
+                <p class="eyebrow">A LITTLE MORE CARE</p>
+                <h1>Good care.<br>Happy paws.</h1>
+                <p>Keep your pet’s sessions and care updates close at hand.</p>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" required placeholder="Enter password">
-            </div>
-            <button type="submit">Login</button>
-            <button type="button" class="link-btn" onclick="toggleForgotPass(true)">Forgot Password?</button>
-        </form>
+            <p class="story-note">MADE FOR THE ONES WHO MAKE A HOUSE A HOME.</p>
+            <span class="story-decoration decoration-one" aria-hidden="true">♡</span>
+            <span class="story-decoration decoration-two" aria-hidden="true">✳</span>
+        </section>
 
-        <!-- Forgot Password Form (Hidden by default) -->
-        <form id="forgotForm" style="display: none;">
-            <h2>Reset Password</h2>
-            <div class="form-group">
-                <label for="resetEmail">Email Address</label>
-                <input type="email" id="resetEmail" required placeholder="Enter your registered email">
-            </div>
-            <button type="submit">Send Reset Link</button>
-            <button type="button" class="link-btn" onclick="toggleForgotPass(false)">Back to Login</button>
-        </form>
-    </div>
+        <section class="login-side">
+            <div class="login-card">
+                <span class="login-card-mark" aria-hidden="true">♡</span>
+                <form id="loginForm">
+                    <p class="eyebrow">WELCOME BACK</p>
+                    <h2>Sign in to your account</h2>
+                    <p class="login-description">Your pet’s little corner of the world.</p>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" autocomplete="username" required placeholder="Your username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" autocomplete="current-password" required placeholder="Your password">
+                        <button type="button" class="password-toggle" id="togglePassword" aria-controls="password" aria-pressed="false">Show password</button>
+                    </div>
+                    <button class="primary-button login-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+                    <p class="form-message" id="loginMessage" aria-live="polite"></p>
+                    <button type="button" class="link-btn" onclick="toggleForgotPass(true)">Forgot your password?</button>
+                </form>
 
+                <form id="forgotForm" hidden>
+                    <p class="eyebrow">ACCOUNT HELP</p>
+                    <h2>Password reset</h2>
+                    <p class="login-description">Password reset is not available because this account database has no email or reset fields.</p>
+                    <button type="button" class="link-btn" onclick="toggleForgotPass(false)">Back to sign in</button>
+                    <p class="form-message" id="resetMessage" aria-live="polite"></p>
+                </form>
+            </div>
+            <p class="login-footnote">YOUR PET’S CARE, ALL TOGETHER.</p>
+        </section>
+    </main>
     <script src="app.js"></script>
 </body>
 </html>
