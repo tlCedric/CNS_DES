@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fbfaf6">
+  <title>Staff dashboard | Kinyozi</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="staff.js" defer></script>
+</head>
+<body data-page="dashboard">
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">K</span> Kinyozi</a>
+    <nav aria-label="Main navigation">
+      <a href="index.html">Booking site</a>
+      <button class="nav-button" id="sign-out-button" type="button">Sign out</button>
+    </nav>
+  </header>
+  <main class="staff-dashboard">
+    <section class="staff-welcome">
+      <div>
+        <p class="eyebrow">STAFF DASHBOARD</p>
+        <h1>Welcome, <span id="staff-name">…</span></h1>
+        <p id="staff-pairing" class="staff-intro">Loading your barber details…</p>
+      </div>
+      <div class="staff-role" id="staff-role"></div>
+    </section>
+
+    <p class="form-message dashboard-message" id="dashboard-message" role="status" aria-live="polite"></p>
+
+    <section class="dashboard-panel" aria-labelledby="availability-heading">
+      <div class="dashboard-panel-heading">
+        <div>
+          <p class="eyebrow">WEEKLY SCHEDULE</p>
+          <h2 id="availability-heading">Available hours</h2>
+        </div>
+      </div>
+      <p class="staff-intro">Standard hours are Monday–Saturday, 9:00 a.m.–6:00 p.m. Appointments are 30 minutes.</p>
+      <div class="availability-grid" id="availability-list"></div>
+    </section>
+
+    <section class="dashboard-panel" aria-labelledby="appointments-heading">
+      <div class="dashboard-panel-heading">
+        <div>
+          <p class="eyebrow">YOUR BOOKINGS</p>
+          <h2 id="appointments-heading">Appointments</h2>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Customer</th><th>Style</th><th>Date and time</th><th>Status</th><th>Update</th></tr>
+          </thead>
+          <tbody id="staff-bookings"></tbody>
+        </table>
+      </div>
+      <p class="empty-state" id="staff-empty" hidden>No appointments have been assigned yet.</p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">K</span> Kinyozi</a>
+    <span>Sharp boy needs a clean cut</span>
+    <span>© <span id="current-year"></span> Kinyozi</span>
+  </footer>
+</body>
+</html>
