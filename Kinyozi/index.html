@@ -3,166 +3,109 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#15211d">
-  <title>Kinyozi — Book your next cut</title>
+  <meta name="theme-color" content="#f7f5ef">
+  <title>Kinyozi | Sharp boy needs a clean cut</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="#" aria-label="Kinyozi home">
-      <span class="brand-mark" aria-hidden="true">K</span>
-      <span>kinyozi<span class="brand-period">.</span></span>
-    </a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <button class="nav-button is-active" type="button" data-view="booking" aria-pressed="true">Book a cut</button>
-      <button class="nav-button" type="button" data-view="barber" aria-pressed="false">Admin dashboard</button>
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">K</span> Kinyozi</a>
+    <nav aria-label="Main navigation">
+      <a href="#styles">Styles and prices</a>
+      <a href="#booking">Book a cut</a>
+      <a href="staff-login.html">Staff login</a>
     </nav>
-    <span class="open-label"><span class="open-dot"></span> Taking bookings</span>
   </header>
 
-  <main>
-    <section class="hero" aria-labelledby="hero-title">
+  <main id="top">
+    <section class="hero view-panel" data-panel="booking" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-line"></span> YOUR CHAIR IS WAITING</p>
-        <h1 id="hero-title">A good cut.<br><span>No waiting around.</span></h1>
-        <p class="hero-description">Pick your style, choose a time, and leave the rest to us. Book your next visit in a few taps.</p>
-        <a class="text-link" href="#booking">Find your time <span aria-hidden="true">↓</span></a>
+        <p class="eyebrow">YOUR NEIGHBOURHOOD BARBERSHOP</p>
+        <h1 id="hero-title">Sharp boy needs a clean cut</h1>
+        <p>From a clean fade to dreadlocks maintenance, choose your style and book a time that works for you.</p>
+        <a class="button" href="#booking">Book an appointment</a>
       </div>
-      <div class="hero-art" aria-label="Illustration of a barber chair">
-        <div class="art-circle"></div>
-        <div class="art-spark art-spark-one">✳</div>
-        <div class="art-spark art-spark-two">✳</div>
-        <div class="chair">
-          <div class="chair-head"></div>
-          <div class="chair-back"></div>
-          <div class="chair-seat"></div>
-          <div class="chair-arm chair-arm-left"></div>
-          <div class="chair-arm chair-arm-right"></div>
-          <div class="chair-post"></div>
-          <div class="chair-base"></div>
-        </div>
-        <span class="art-caption">YOUR NEXT<br>FRESH START</span>
-      </div>
+      <figure class="hero-photo">
+        <img
+          class="hero-image"
+          src="images/kenyan-barbershop.jpg"
+          alt="A barber cutting a customer's hair in a Kenyan barbershop"
+          fetchpriority="high"
+        >
+        <figcaption class="photo-credit">Photo by <a href="https://commons.wikimedia.org/wiki/File:Barber_and_smiling_customer_in_a_Kenyan_barbershop.jpg">Lebu Ayiga on Wikimedia Commons</a>, licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</figcaption>
+      </figure>
     </section>
 
-    <section class="booking-section view-panel" id="booking" data-panel="booking" aria-labelledby="booking-title">
+    <section class="content-section view-panel" data-panel="booking" id="styles" aria-labelledby="styles-title">
       <div class="section-heading">
-        <div>
-          <p class="eyebrow">LET'S GET YOU IN</p>
-          <h2 id="booking-title">Book your appointment</h2>
-        </div>
-        <span class="step-label"><span>01</span> / 01</span>
+        <p class="eyebrow">OUR MENU</p>
+        <h2 id="styles-title">Styles and prices</h2>
+        <p>Simple services and prices in Kenyan shillings.</p>
       </div>
-
-      <div class="booking-layout">
-        <form class="booking-form" id="booking-form">
-          <div class="form-grid">
-            <label class="field">
-              <span>Your name</span>
-              <input name="name" autocomplete="name" placeholder="e.g. Alex Kimani" maxlength="80" required>
-            </label>
-            <label class="field">
-              <span>Phone number</span>
-              <input name="phone" type="tel" autocomplete="tel" placeholder="+254 712 345 678" maxlength="30" required>
-            </label>
-            <label class="field field-wide">
-              <span>Choose your style</span>
-              <select name="style" required>
-                <option value="" selected disabled>Select a haircut</option>
-                <option>Classic Cut</option>
-                <option>Fade</option>
-                <option>Dreadlocks Maintenance</option>
-                <option>Cornrows</option>
-                <option>Beard Trim</option>
-                <option>Hair Wash</option>
-                <option>Hair Coloring</option>
-              </select>
-            </label>
-            <label class="field">
-              <span>Date</span>
-              <input name="date" id="appointment-date" type="date" required>
-            </label>
-            <label class="field">
-              <span>Time</span>
-              <input name="time" type="time" required>
-            </label>
-            <label class="field field-wide">
-              <span>Anything we should know? <span class="optional">(optional)</span></span>
-              <textarea name="notes" rows="2" maxlength="250" placeholder="Tell your barber how you like it..."></textarea>
-            </label>
-          </div>
-          <div class="form-footer">
-            <p class="privacy-note"><span aria-hidden="true">✦</span> Your details stay on this device.</p>
-            <button class="button button-primary" type="submit">Book my appointment <span aria-hidden="true">→</span></button>
-          </div>
-          <p class="form-message" id="booking-message" role="status" aria-live="polite"></p>
-        </form>
-
-        <aside class="booking-aside">
-          <p class="aside-label">THE KINYOZI PROMISE</p>
-          <div class="promise-item">
-            <span class="promise-number">01</span>
-            <div><h3>Right on time</h3><p>Your time matters. We keep your appointment on schedule.</p></div>
-          </div>
-          <div class="promise-item">
-            <span class="promise-number">02</span>
-            <div><h3>Your style, your way</h3><p>Tell us what you want and we'll make it happen.</p></div>
-          </div>
-          <div class="aside-divider"></div>
-          <p class="aside-footnote">Walk-ins are welcome when a chair is free. Booking ahead is best.</p>
-        </aside>
+      <div class="styles-layout">
+        <div class="styles-grid" id="styles-list" aria-live="polite"></div>
+        <figure class="styles-photo">
+          <img
+            class="styles-image"
+            src="images/barber-cut-one.jpg"
+            alt="A barber shaping a customer's textured hair"
+            loading="lazy"
+          >
+          <figcaption class="photo-credit">Photo from <a href="https://images.unsplash.com/photo-1567894340315-735d7c361db0?auto=format&amp;fit=crop&amp;w=1200&amp;q=85">Unsplash</a>.</figcaption>
+        </figure>
       </div>
+      <aside class="student-offer">
+        <p class="eyebrow">STUDENT SPECIAL</p>
+        <h3>Back to school: Bald cut for students</h3>
+        <p>Choose Classic Cut (KSh 300) when booking and add “student bald cut” in the notes.</p>
+      </aside>
     </section>
 
-    <section class="dashboard-section view-panel" data-panel="barber" aria-labelledby="dashboard-title" hidden>
-      <div class="section-heading dashboard-heading">
-        <div>
-          <p class="eyebrow">YOUR DAY, AT A GLANCE</p>
-          <h2 id="dashboard-title">Admin dashboard</h2>
-          <p class="dashboard-subtitle">Review customers, manage appointments, and assign a barber to each booking.</p>
-        </div>
-        <button class="button button-secondary" type="button" id="back-to-booking">+ New booking</button>
+    <section class="content-section view-panel" data-panel="booking" id="booking" aria-labelledby="booking-title">
+      <div class="section-heading">
+        <p class="eyebrow">QUICK AND EASY</p>
+        <h2 id="booking-title">Book your appointment</h2>
+        <p>Choose your style and date. We’ll assign the appointment time for you.</p>
       </div>
 
-      <div class="stats-grid" aria-label="Booking summary">
-        <article class="stat-card"><span>Total bookings</span><strong id="total-count">0</strong></article>
-        <article class="stat-card"><span>Upcoming</span><strong id="upcoming-count">0</strong></article>
-        <article class="stat-card"><span>Awaiting confirmation</span><strong id="pending-count">0</strong></article>
-      </div>
-
-      <div class="appointments-card">
-        <div class="appointments-heading">
-          <h3>Customer bookings</h3>
-          <span class="local-label"><span class="open-dot"></span> Saved on this device</span>
+      <form class="booking-form" id="booking-form">
+        <div class="form-grid">
+          <label class="field">
+            <span>Your name</span>
+            <input name="name" autocomplete="name" placeholder="e.g. Alex Kimani" maxlength="40" required>
+          </label>
+          <label class="field">
+            <span>Phone number</span>
+            <input name="phone" type="tel" autocomplete="tel" placeholder="07xx xxx xxx" maxlength="30" required>
+          </label>
+          <label class="field field-wide">
+            <span>Choose a style</span>
+            <select name="style" required>
+              <option value="" selected disabled>Select a style</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Date</span>
+            <input name="date" id="appointment-date" type="date" required>
+          </label>
+          <label class="field field-wide">
+            <span>Notes <span class="optional">(optional)</span></span>
+            <textarea name="notes" rows="3" maxlength="250" placeholder="Any details for your barber?"></textarea>
+          </label>
         </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Customer</th>
-                <th>Haircut</th>
-                <th>Appointment</th>
-                <th>Barber</th>
-                <th>Status</th>
-                <th><span class="sr-only">Actions</span></th>
-              </tr>
-            </thead>
-            <tbody id="appointment-list"></tbody>
-          </table>
+        <div class="form-footer">
+          <p class="privacy-note">Choose a date. We’ll assign an available time and barber.</p>
+          <button class="button" type="submit">Book my cut</button>
         </div>
-        <p class="empty-state" id="empty-state">No appointments yet. New bookings will show up here.</p>
-      </div>
-      <p class="dashboard-note">Bookings and barber assignments are saved in this browser only; other devices and browsers have separate lists.</p>
+        <p class="form-message" id="booking-message" role="status" aria-live="polite"></p>
+      </form>
     </section>
   </main>
 
   <footer class="site-footer">
-    <a class="brand footer-brand" href="#" aria-label="Kinyozi home">
-      <span class="brand-mark" aria-hidden="true">K</span>
-      <span>kinyozi<span class="brand-period">.</span></span>
-    </a>
-    <span>Good cuts. Good people.</span>
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">K</span> Kinyozi</a>
+    <span>Sharp boy needs a clean cut</span>
     <span>© <span id="current-year"></span> Kinyozi</span>
   </footer>
 </body>

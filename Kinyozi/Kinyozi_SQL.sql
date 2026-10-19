@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS Kinyozi_Booking_DES;
-USE Kinyozi_Booking_DES;
+CREATE DATABASE IF NOT EXISTS Kinyozi_DES;
+USE Kinyozi_DES;
 
 CREATE TABLE IF NOT EXISTS Customer(
 Customer_Id VARCHAR(12) NOT NULL,
@@ -45,7 +45,26 @@ PRIMARY KEY (Payment_Id),
 FOREIGN KEY (Booking_Id) REFERENCES Booking(Booking_Id)
 );
 
+CREATE TABLE IF NOT EXISTS Booking_Status(
+Booking_Id VARCHAR(12) NOT NULL,
+Status_Name VARCHAR(20) NOT NULL DEFAULT 'Pending',
+PRIMARY KEY (Booking_Id),
+FOREIGN KEY (Booking_Id) REFERENCES Booking(Booking_Id)
+);
 
+
+CREATE TABLE IF NOT EXISTS Staff_Account(
+Username VARCHAR(40) NOT NULL,
+`Password` VARCHAR(12) NOT NULL,
+Staff_Role VARCHAR(12) NOT NULL,
+Staff_Name VARCHAR(50) NOT NULL,
+Barber_Id VARCHAR(12) NOT NULL,
+PRIMARY KEY (Username),
+FOREIGN KEY (Barber_Id) REFERENCES Barber(Barber_Id)
+);
+
+ALTER TABLE Staff_Account
+ADD COLUMN IF NOT EXISTS Staff_Role VARCHAR(12) NOT NULL DEFAULT 'barber';
 
 INSERT INTO Customer (Customer_Id, Customer_Name, Phone_No) 
 VALUES
@@ -62,10 +81,24 @@ INSERT INTO Barber (Barber_Id, Barber_Name, Phone_No)
 VALUES
 ('BAR001', 'Peter Mwangi', '0701111114'),
 ('BAR002', 'Kevin Otieno', '0702222256'),
-('BAR003', 'Daniel Kariuki', '0703333345')
+('BAR003', 'Daniel Kariuki', '0703333345'),
+('BAR004', 'James Mwangi', '0704444456'),
+('BAR005', 'David Njoroge', '0705555567')
 ON DUPLICATE KEY UPDATE
 Barber_Name = VALUES(Barber_Name),
 Phone_No = VALUES(Phone_No);
+
+INSERT INTO Staff_Account (Username, `Password`, Staff_Role, Staff_Name, Barber_Id) VALUES
+('Peter', 'Mwangi', 'barber', 'Peter Mwangi', 'BAR001'),
+('Kevin', 'Otieno', 'barber', 'Kevin Otieno', 'BAR002'),
+('Daniel', 'Kariuki', 'barber', 'Daniel Kariuki', 'BAR003'),
+('James', 'Mwangi', 'barber', 'James Mwangi', 'BAR004'),
+('David', 'Njoroge', 'barber', 'David Njoroge', 'BAR005')
+ON DUPLICATE KEY UPDATE
+`Password` = VALUES(`Password`),
+Staff_Role = VALUES(Staff_Role),
+Staff_Name = VALUES(Staff_Name),
+Barber_Id = VALUES(Barber_Id);
 
 INSERT INTO Styles (Style_Id, Style_Name, Style_Description, Price) 
 VALUES
@@ -75,11 +108,13 @@ VALUES
 ('STY004', 'Cornrows', 'Tight braids styled close to the scalp.', 600),
 ('STY005', 'Beard Trim', 'Precision trimming of facial hair.', 150),
 ('STY006', 'Hair Wash', 'Professional hair cleaning service.', 200),
-('STY007', 'Hair Coloring', 'Color treatment for hair.', 800)
+('STY007', 'Hair Coloring', 'Color treatment for hair.', 800),
+('STY008', 'Taper', 'A neat, graduated cut with a clean finish.', 900)
 ON DUPLICATE KEY UPDATE
 Style_Name = VALUES(Style_Name),
 Style_Description = VALUES(Style_Description),
 Price = VALUES(Price);
+
 
 INSERT INTO Booking (Booking_Id, Customer_Id, Barber_Id, Style_Id, Booking_Date, Notes)
 VALUES
@@ -101,18 +136,15 @@ INSERT INTO Payment (Payment_Id, Booking_Id, Payment_Method, Amount_Paid)
 VALUES
 ('PAY001', 'BOOK001', 'M-Pesa', 300),
 ('PAY002', 'BOOK002', 'Cash', 350),
-('PAY003', 'BOOK003', 'M-Pesa', 500)
+('PAY003', 'BOOK003', 'M-Pesa', 500),
+('PAY004', 'BOOK004', 'Cash', 600),
+('PAY005', 'BOOK005', 'M-Pesa', 150),
+('PAY006', 'BOOK006', 'Cash', 200),
+('PAY007', 'BOOK007', 'M-Pesa', 800)
 ON DUPLICATE KEY UPDATE
 Booking_Id = VALUES(Booking_Id),
 Payment_Method = VALUES(Payment_Method),
 Amount_Paid = VALUES(Amount_Paid);
 
--- ========== CHECK THE DATA ==========
 
 SELECT * FROM Payment;
-
-SELECT c.Customer_Name, b.Barber_Name, s.Style_Name, bk.Booking_Date
-FROM Booking bk
-JOIN Customer c ON c.Customer_Id = bk.Customer_Id
-JOIN Barber b ON b.Barber_Id = bk.Barber_Id
-JOIN Styles s ON s.Style_Id = bk.Style_Id;
