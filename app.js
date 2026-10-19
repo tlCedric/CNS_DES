@@ -1,10 +1,23 @@
 function toggleForgotPass(showForgot) {
     const loginForm = document.getElementById('loginForm');
     const forgotForm = document.getElementById('forgotForm');
+    const registerForm = document.getElementById('registerForm');
     if (!loginForm || !forgotForm) return;
 
     loginForm.hidden = showForgot;
     forgotForm.hidden = !showForgot;
+    if (registerForm) registerForm.hidden = true;
+}
+
+function toggleRegister(showRegister) {
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const forgotForm = document.getElementById('forgotForm');
+    if (!loginForm || !registerForm || !forgotForm) return;
+
+    loginForm.hidden = showRegister;
+    registerForm.hidden = !showRegister;
+    forgotForm.hidden = true;
 }
 
 function escapeHtml(value) {
@@ -50,6 +63,40 @@ if (loginForm) {
                 body: JSON.stringify({
                     username: document.getElementById('username').value,
                     password: document.getElementById('password').value
+                })
+            });
+            window.location.href = 'dashboard.html';
+        } catch (error) {
+            status.textContent = error.message;
+            status.classList.add('is-error');
+            submit.disabled = false;
+        }
+    });
+}
+
+const registerForm = document.getElementById('registerForm');
+if (registerForm) {
+    registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const submit = registerForm.querySelector('[type="submit"]');
+        const status = document.getElementById('registerMessage');
+        const password = document.getElementById('registerPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        if (password !== confirmPassword) {
+            status.textContent = 'The passwords do not match.';
+            status.className = 'form-message is-error';
+            return;
+        }
+
+        submit.disabled = true;
+        status.textContent = 'Creating your account…';
+        status.className = 'form-message';
+        try {
+            await requestJson('/api/register', {
+                method: 'POST',
+                body: JSON.stringify({
+                    username: document.getElementById('registerUsername').value,
+                    password
                 })
             });
             window.location.href = 'dashboard.html';
@@ -181,7 +228,7 @@ if (dashboard) {
                     <span class="pet-details"><strong>${escapeHtml(pet.Pet_Name)}</strong><small>${escapeHtml(pet.Pet_Type)} · Pet #${escapeHtml(pet.Pet_Id)}</small></span>
                     <span class="pet-heart" aria-hidden="true">♡</span>
                 </article>`).join('')
-            : '<p class="empty-state">No pets are linked to your account yet.</p>';
+            : '<p class="empty-state">No pets are linked to this account yet. Ask an administrator to assign a pet before booking.</p>';
 
         document.getElementById('sessionList').innerHTML = sessions.length
             ? sessions.slice(0, 5).map((session) => `

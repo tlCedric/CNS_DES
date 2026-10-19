@@ -19,8 +19,9 @@
             <nav class="main-nav">
                 <a class="nav-link is-active" href="#overview"><span aria-hidden="true">⌂</span> Overview</a>
                 <a class="nav-link" href="#book-session"><span aria-hidden="true">＋</span> Book a session</a>
-                <a class="nav-link" href="#reports"><span aria-hidden="true">▤</span> Reports</a>
                 <a class="nav-link" href="#pets"><span aria-hidden="true">♡</span> My pets</a>
+                <a class="nav-link" href="#sessions"><span aria-hidden="true">↗</span> Sessions</a>
+                <a class="nav-link" href="#reports"><span aria-hidden="true">▤</span> Reports</a>
                 <a class="nav-link" href="#medications"><span aria-hidden="true">✚</span> Medication</a>
                 <a class="nav-link" href="#make-payment"><span aria-hidden="true">$</span> Payments</a>
                 <a class="nav-link admin-only" href="#admin-records" hidden><span aria-hidden="true">▦</span> All records</a>
@@ -60,25 +61,21 @@
                     <div class="summary-icon icon-pets" aria-hidden="true">♡</div>
                     <p class="summary-label">MY PETS</p>
                     <p class="summary-value" id="petCount">—</p>
-                    <p class="summary-note">in your care profile</p>
                 </article>
                 <article class="summary-card">
                     <div class="summary-icon icon-sessions" aria-hidden="true">↗</div>
                     <p class="summary-label">SESSIONS</p>
                     <p class="summary-value" id="sessionCount">—</p>
-                    <p class="summary-note">booked for your pets</p>
                 </article>
                 <article class="summary-card">
                     <div class="summary-icon icon-reports" aria-hidden="true">▤</div>
                     <p class="summary-label">CARE REPORTS</p>
                     <p class="summary-value" id="reportCount">—</p>
-                    <p class="summary-note">updates from your team</p>
                 </article>
                 <article class="summary-card">
                     <div class="summary-icon icon-payments" aria-hidden="true">Σ</div>
                     <p class="summary-label">PAYMENTS</p>
                     <p class="summary-value" id="paymentTotal">—</p>
-                    <p class="summary-note">amount recorded</p>
                 </article>
             </section>
 
@@ -109,58 +106,6 @@
                         <button class="primary-button form-submit" id="bookingSubmit" type="submit" disabled>Book session <span aria-hidden="true">→</span></button>
                         <p class="form-message" id="bookingMessage" aria-live="polite"></p>
                     </form>
-                </section>
-
-                <section class="content-panel pets-panel" id="pets" aria-labelledby="petsHeading">
-                    <div class="panel-heading">
-                        <div>
-                            <p class="eyebrow">THE ONES YOU LOVE</p>
-                            <h2 id="petsHeading">My pets</h2>
-                        </div>
-                        <span class="subtle-count" id="petsPanelCount"></span>
-                    </div>
-                    <div class="pet-list" id="petList">
-                        <p class="empty-state">Loading your pets…</p>
-                    </div>
-                </section>
-
-                <section class="content-panel sessions-panel" aria-labelledby="sessionsHeading">
-                    <div class="panel-heading">
-                        <div>
-                            <p class="eyebrow">CARE, AT A GLANCE</p>
-                            <h2 id="sessionsHeading">Your sessions</h2>
-                        </div>
-                        <a class="text-link" href="#book-session">Book one <span aria-hidden="true">→</span></a>
-                    </div>
-                    <div class="session-list" id="sessionList">
-                        <p class="empty-state">Loading your sessions…</p>
-                    </div>
-                </section>
-
-                <section class="content-panel reports-panel" id="reports" aria-labelledby="reportsHeading">
-                    <div class="panel-heading">
-                        <div>
-                            <p class="eyebrow">LITTLE NOTES, BIG LOVE</p>
-                            <h2 id="reportsHeading">Care reports</h2>
-                        </div>
-                        <span class="subtle-count" id="reportsPanelCount"></span>
-                    </div>
-                    <div class="report-list" id="reportList">
-                        <p class="empty-state">Loading your reports…</p>
-                    </div>
-                </section>
-
-                <section class="content-panel medications-panel" id="medications" aria-labelledby="medicationsHeading">
-                    <div class="panel-heading">
-                        <div>
-                            <p class="eyebrow">CARE TO KEEP CLOSE</p>
-                            <h2 id="medicationsHeading">Medication</h2>
-                        </div>
-                        <span class="subtle-count" id="medicationsPanelCount"></span>
-                    </div>
-                    <div class="medication-list" id="medicationList">
-                        <p class="empty-state">Loading medication records…</p>
-                    </div>
                 </section>
 
                 <section class="content-panel payment-panel" id="make-payment" aria-labelledby="paymentHeading">
@@ -195,6 +140,58 @@
                     <div class="payment-history" id="paymentHistory" aria-label="Recent payments"></div>
                 </section>
 
+                <section class="content-panel pets-panel" id="pets" aria-labelledby="petsHeading">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">THE ONES YOU LOVE</p>
+                            <h2 id="petsHeading">My pets</h2>
+                        </div>
+                        <span class="subtle-count" id="petsPanelCount"></span>
+                    </div>
+                    <div class="pet-list" id="petList">
+                        <p class="empty-state">Loading your pets…</p>
+                    </div>
+                </section>
+
+                <section class="content-panel sessions-panel" id="sessions" aria-labelledby="sessionsHeading">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">CARE, AT A GLANCE</p>
+                            <h2 id="sessionsHeading">Your sessions</h2>
+                        </div>
+                        <a class="text-link" href="#book-session">Book one <span aria-hidden="true">→</span></a>
+                    </div>
+                    <div class="session-list" id="sessionList">
+                        <p class="empty-state">Loading your sessions…</p>
+                    </div>
+                </section>
+
+                <section class="content-panel reports-panel" id="reports" aria-labelledby="reportsHeading">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">CARE HISTORY</p>
+                            <h2 id="reportsHeading">Care reports</h2>
+                        </div>
+                        <span class="subtle-count" id="reportsPanelCount"></span>
+                    </div>
+                    <div class="report-list" id="reportList">
+                        <p class="empty-state">Loading your reports…</p>
+                    </div>
+                </section>
+
+                <section class="content-panel medications-panel" id="medications" aria-labelledby="medicationsHeading">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">CARE TO KEEP CLOSE</p>
+                            <h2 id="medicationsHeading">Medication</h2>
+                        </div>
+                        <span class="subtle-count" id="medicationsPanelCount"></span>
+                    </div>
+                    <div class="medication-list" id="medicationList">
+                        <p class="empty-state">Loading medication records…</p>
+                    </div>
+                </section>
+
                 <section class="content-panel admin-records-panel admin-only" id="admin-records" aria-labelledby="adminRecordsHeading" hidden>
                     <div class="panel-heading">
                         <div>
@@ -207,7 +204,6 @@
                     <div class="admin-records-grid" id="adminRecordsGrid"></div>
                 </section>
             </div>
-            <footer class="dashboard-footer">PETCARE <span>MADE FOR THE ONES WHO MAKE A HOUSE A HOME.</span></footer>
         </main>
     </div>
     <script src="app.js"></script>

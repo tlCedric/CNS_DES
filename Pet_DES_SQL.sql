@@ -57,10 +57,11 @@ FOREIGN KEY (Pet_Id) REFERENCES PETS(Pet_Id)
 );
 
 CREATE TABLE IF NOT EXISTS Users(
-User_Id INT NOT NULL,
-Username VARCHAR(50),
-Password VARCHAR(40),
-PRIMARY KEY (User_Id)
+User_Id INT NOT NULL AUTO_INCREMENT,
+Username VARCHAR(50) NOT NULL,
+Password VARCHAR(255) NOT NULL,
+PRIMARY KEY (User_Id),
+UNIQUE KEY uq_users_username (Username)
 );
 
 CREATE TABLE IF NOT EXISTS Payment(
@@ -80,7 +81,8 @@ VALUES
 ('2310', 'Emilia', 'Clark'),
 ('1090', 'Alex', 'Turner'),
 ('4560', 'John', 'Doe'),
-('7890', 'Jane', 'Smith')
+('7890', 'Jane', 'Smith'),
+('5670', 'Michael', 'Johnson')
 ON DUPLICATE KEY UPDATE Username = VALUES(Username), Password = VALUES(Password);
 
 INSERT INTO Staff(Staff_Id, Staff_Name, Staff_Type)

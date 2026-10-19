@@ -9,28 +9,10 @@
 </head>
 <body class="login-page">
     <main class="login-layout">
-        <section class="login-story" aria-label="Petcare">
-            <a class="login-brand" href="index.html">
-                <span class="brand-icon" aria-hidden="true">P</span>
-                <span>petcare<span class="brand-period">.</span></span>
-            </a>
-            <div class="story-copy">
-                <p class="eyebrow">A LITTLE MORE CARE</p>
-                <h1>Good care.<br>Happy paws.</h1>
-                <p>Keep your pet’s sessions and care updates close at hand.</p>
-            </div>
-            <p class="story-note">MADE FOR THE ONES WHO MAKE A HOUSE A HOME.</p>
-            <span class="story-decoration decoration-one" aria-hidden="true">♡</span>
-            <span class="story-decoration decoration-two" aria-hidden="true">✳</span>
-        </section>
-
         <section class="login-side">
             <div class="login-card">
-                <span class="login-card-mark" aria-hidden="true">♡</span>
                 <form id="loginForm">
-                    <p class="eyebrow">WELCOME BACK</p>
-                    <h2>Sign in to your account</h2>
-                    <p class="login-description">Your pet’s little corner of the world.</p>
+                    <h1 class="login-title">PETCARE LOGIN PAGE</h1>
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" id="username" name="username" autocomplete="username" required placeholder="Your username">
@@ -43,6 +25,28 @@
                     <button class="primary-button login-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
                     <p class="form-message" id="loginMessage" aria-live="polite"></p>
                     <button type="button" class="link-btn" onclick="toggleForgotPass(true)">Forgot your password?</button>
+                    <button type="button" class="link-btn" onclick="toggleRegister(true)">Create an account</button>
+                </form>
+
+                <form id="registerForm" hidden>
+                    <p class="eyebrow">GET STARTED</p>
+                    <h2>Create your account</h2>
+                    <p class="login-description">Sign up to keep your pet’s care in one place.</p>
+                    <div class="form-group">
+                        <label for="registerUsername">Username</label>
+                        <input type="text" id="registerUsername" name="username" autocomplete="username" required minlength="3" maxlength="50" pattern="[A-Za-z0-9_.\-]+" placeholder="Choose a username">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" name="password" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="At least 8 characters">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="Enter your password again">
+                    </div>
+                    <button class="primary-button login-submit" type="submit">Create account <span aria-hidden="true">→</span></button>
+                    <p class="form-message" id="registerMessage" aria-live="polite"></p>
+                    <button type="button" class="link-btn" onclick="toggleRegister(false)">Back to sign in</button>
                 </form>
 
                 <form id="forgotForm" hidden>
@@ -53,7 +57,6 @@
                     <p class="form-message" id="resetMessage" aria-live="polite"></p>
                 </form>
             </div>
-            <p class="login-footnote">YOUR PET’S CARE, ALL TOGETHER.</p>
         </section>
     </main>
     <script src="app.js"></script>

@@ -1,13 +1,17 @@
 const crypto = require('crypto');
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
+const { promisify } = require('util');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const scrypt = promisify(crypto.scrypt);
 const COOKIE_NAME = 'petcare_session';
 const SESSION_LIFETIME = 7 * 24 * 60 * 60;
 const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
 let sessionStaffByName = false;
+let userSchemaReady = false;
 const adminRecordTables = {
     pets: {
         table: 'PETS',
@@ -74,16 +78,26 @@ app.use(express.static(__dirname));
 const db = mysql.createConnection({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'amadeus',
+    password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'Pets_DES'
 });
 
 db.connect((err) => {
     if (err) {
         console.error('Database connection failed:', err.message);
+        console.error('Check that MySQL is running and the DB_HOST, DB_USER, DB_PASSWORD, and DB_NAME values in .env are correct.');
         return;
     }
     console.log(`Connected to MySQL Database: ${process.env.DB_NAME || 'Pets_DES'}`);
+    initializeUserSchema()
+        .then(() => {
+            userSchemaReady = true;
+            console.log('User registration and password storage are ready.');
+        })
+        .catch((schemaError) => {
+            console.error('Unable to prepare the Users table:', schemaError.message);
+            console.error('Check for duplicate usernames, then restart the app.');
+        });
     db.query('SHOW COLUMNS FROM Session_', (schemaError, columns) => {
         if (schemaError) {
             console.error('Unable to inspect Session_ columns:', schemaError.message);
@@ -106,6 +120,43 @@ function query(sql, values = []) {
             else resolve(results);
         });
     });
+}
+
+async function initializeUserSchema() {
+    await query(
+        'ALTER TABLE Users MODIFY User_Id INT NOT NULL AUTO_INCREMENT, MODIFY Username VARCHAR(50) NOT NULL, MODIFY Password VARCHAR(255) NOT NULL'
+    );
+    const uniqueUsernameIndexes = await query(
+        `SELECT INDEX_NAME
+         FROM INFORMATION_SCHEMA.STATISTICS
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'Users'
+         GROUP BY INDEX_NAME
+         HAVING COUNT(*) = 1 AND MAX(COLUMN_NAME = 'Username') = 1 AND MAX(NON_UNIQUE) = 0`
+    );
+    if (!uniqueUsernameIndexes.length) {
+        await query('ALTER TABLE Users ADD UNIQUE KEY uq_users_username (Username)');
+    }
+}
+
+async function hashPassword(password) {
+    const salt = crypto.randomBytes(16);
+    const derivedKey = await scrypt(password, salt, 64);
+    return `scrypt$${salt.toString('hex')}$${derivedKey.toString('hex')}`;
+}
+
+async function verifyPassword(password, storedPassword) {
+    if (typeof storedPassword !== 'string') return false;
+    if (!storedPassword.startsWith('scrypt$')) return password === storedPassword;
+
+    const [algorithm, saltHex, keyHex, extra] = storedPassword.split('$');
+    if (algorithm !== 'scrypt' || !saltHex || !keyHex || extra !== undefined
+        || !/^[a-f\d]{32}$/i.test(saltHex) || !/^[a-f\d]{128}$/i.test(keyHex)) {
+        return false;
+    }
+
+    const expectedKey = Buffer.from(keyHex, 'hex');
+    const actualKey = await scrypt(password, Buffer.from(saltHex, 'hex'), expectedKey.length);
+    return crypto.timingSafeEqual(expectedKey, actualKey);
 }
 
 function sign(value) {
@@ -178,21 +229,64 @@ app.post('/api/login', async (req, res) => {
     if (typeof username !== 'string' || typeof password !== 'string' || !username.trim() || !password) {
         return res.status(400).json({ message: 'Enter your username and password.' });
     }
+    if (!userSchemaReady) {
+        return res.status(503).json({ message: 'Sign-in is unavailable until the user database is ready.' });
+    }
 
     try {
         const users = await query(
-            'SELECT User_Id, Username FROM Users WHERE Username = ? AND Password = ? LIMIT 1',
-            [username.trim(), password]
+            'SELECT User_Id, Username, Password FROM Users WHERE Username = ? LIMIT 1',
+            [username.trim()]
         );
-        if (!users.length) {
+        if (!users.length || !await verifyPassword(password, users[0].Password)) {
             return res.status(401).json({ message: 'That username and password do not match.' });
         }
 
+        if (!users[0].Password.startsWith('scrypt$')) {
+            await query('UPDATE Users SET Password = ? WHERE User_Id = ?', [
+                await hashPassword(password),
+                users[0].User_Id
+            ]);
+        }
         setSessionCookie(res, users[0].User_Id, req);
         return res.json({ success: true, username: users[0].Username });
     } catch (error) {
         console.error('Login query failed:', error.message);
         return res.status(500).json({ message: 'Unable to sign in right now. Please try again.' });
+    }
+});
+
+app.post('/api/register', async (req, res) => {
+    const username = typeof req.body?.username === 'string' ? req.body.username.trim() : '';
+    const password = typeof req.body?.password === 'string' ? req.body.password : '';
+    if (!userSchemaReady) {
+        return res.status(503).json({ message: 'Registration is unavailable until the user database is ready.' });
+    }
+    if (!/^[A-Za-z0-9_.-]{3,50}$/.test(username)) {
+        return res.status(400).json({ message: 'Choose a username of 3–50 letters, numbers, dots, dashes, or underscores.' });
+    }
+    if (username.toLowerCase() === 'admin') {
+        return res.status(400).json({ message: 'That username is reserved.' });
+    }
+    if (password.length < 8 || password.length > 128) {
+        return res.status(400).json({ message: 'Choose a password between 8 and 128 characters.' });
+    }
+
+    try {
+        const existingUsers = await query('SELECT User_Id FROM Users WHERE Username = ? LIMIT 1', [username]);
+        if (existingUsers.length) {
+            return res.status(409).json({ message: 'That username is already taken.' });
+        }
+        const passwordHash = await hashPassword(password);
+        const result = await query('INSERT INTO Users (Username, Password) VALUES (?, ?)', [username, passwordHash]);
+        setSessionCookie(res, result.insertId, req);
+        return res.status(201).json({ success: true, username });
+    } catch (error) {
+        console.error('Account registration failed:', error.message);
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ message: 'That username is already taken.' });
+        }
+        return res.status(500).json({ message: 'Unable to create your account right now. Please try again.' });
     }
 });
 
@@ -291,6 +385,19 @@ app.get('/api/dashboard', requireUser, async (req, res) => {
         console.error('Dashboard query failed:', error.message);
         return res.status(500).json({ message: 'Unable to load your dashboard. Please try again.' });
     }
+});
+
+app.get('/api/health', (req, res) => {
+    db.query('SELECT 1 AS databaseConnected', (error) => {
+        if (error || !userSchemaReady) {
+            return res.status(503).json({
+                status: 'error',
+                database: error ? 'disconnected' : 'connected',
+                userSchema: userSchemaReady ? 'ready' : 'not-ready'
+            });
+        }
+        return res.json({ status: 'ok', database: 'connected', userSchema: 'ready' });
+    });
 });
 
 app.post('/api/sessions', requireUser, async (req, res) => {
