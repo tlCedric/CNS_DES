@@ -1,0 +1,4 @@
+[submodule "Pet_DES"]
+	path = Pet_DES
+	url = https://github.com/tlCedric/CNS_DES.git
+	branch = Pet_Des

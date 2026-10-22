@@ -345,6 +345,49 @@ app.patch("/api/staff/bookings/:bookingId/status", requireStaff, async (req, res
 
 async function start() {
   await database.query("SELECT 1");
+
+  await database.query(
+    `CREATE TABLE IF NOT EXISTS Booking_Status (
+       Booking_Id VARCHAR(12) NOT NULL,
+       Status_Name VARCHAR(20) NOT NULL DEFAULT 'Pending',
+       PRIMARY KEY (Booking_Id),
+       FOREIGN KEY (Booking_Id) REFERENCES Booking(Booking_Id)
+     )`,
+  );
+  await database.query(
+    `CREATE TABLE IF NOT EXISTS Barber_Styles (
+       Barber_Id VARCHAR(12) NOT NULL,
+       Style_Id VARCHAR(12) NOT NULL,
+       PRIMARY KEY (Barber_Id, Style_Id),
+       FOREIGN KEY (Barber_Id) REFERENCES Barber(Barber_Id),
+       FOREIGN KEY (Style_Id) REFERENCES Styles(Style_Id)
+     )`,
+  );
+  await database.query(
+    `CREATE TABLE IF NOT EXISTS Barber_Availability (
+       Barber_Id VARCHAR(12) NOT NULL,
+       Day_Of_Week TINYINT NOT NULL,
+       Opens_At TIME NOT NULL,
+       Closes_At TIME NOT NULL,
+       PRIMARY KEY (Barber_Id, Day_Of_Week),
+       FOREIGN KEY (Barber_Id) REFERENCES Barber(Barber_Id)
+     )`,
+  );
+  await database.query(
+    `INSERT IGNORE INTO Barber_Styles (Barber_Id, Style_Id)
+     SELECT B.Barber_Id, S.Style_Id
+     FROM Barber B CROSS JOIN Styles S`,
+  );
+  await database.query(
+    `INSERT IGNORE INTO Barber_Availability
+       (Barber_Id, Day_Of_Week, Opens_At, Closes_At)
+     SELECT B.Barber_Id, D.Day_Of_Week, '09:00:00', '18:00:00'
+     FROM Barber B
+     CROSS JOIN (
+       SELECT 1 AS Day_Of_Week UNION ALL SELECT 2 UNION ALL SELECT 3
+       UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6
+     ) D`,
+  );
   await database.query(
     `INSERT IGNORE INTO Booking_Status (Booking_Id, Status_Name)
      SELECT Booking_Id, 'Pending' FROM Booking`,
