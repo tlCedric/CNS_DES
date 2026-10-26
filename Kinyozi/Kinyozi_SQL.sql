@@ -145,9 +145,19 @@ Booking_Id = VALUES(Booking_Id),
 Payment_Method = VALUES(Payment_Method),
 Amount_Paid = VALUES(Amount_Paid);
 
+-- Testing Insertion of records
 SELECT * FROM Payment;
 
-
+-- Sample Data Manipulation
 SELECT Payment_Id, Payment_Method, Amount_Paid
 FROM Payment
 WHERE Amount_Paid >= 300 ;
+
+
+-- Sample Real world Application
+-- "Which payment methods were used for our completed haircuts, and exactly how much did we collect for each booking ID?"
+SELECT `Payment`.Payment_Method, `Payment`.Amount_Paid, Booking.`Booking_Id`
+FROM `Payment`
+JOIN Booking ON `Payment`.Booking_Id = Booking.Booking_Id
+ORDER BY `Payment`.Amount_Paid ASC;
+
