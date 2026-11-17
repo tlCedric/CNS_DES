@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS campus_lab_db;
+USE campus_lab_db;
+
+DROP TABLE IF EXISTS equipment_loans;   
+CREATE TABLE IF NOT EXISTS equipment_loans (
+    Registration_No VARCHAR(20) NOT NULL PRIMARY KEY,
+    Student_Name VARCHAR(100) NOT NULL,
+    Equipment_Name VARCHAR(100) NOT NULL,
+    Serial_Number VARCHAR(50) NOT NULL,
+    Status VARCHAR(20) NOT NULL
+);
+
+INSERT INTO equipment_loans (Registration_No, Student_Name, Equipment_Name, Serial_Number, Status) VALUES
+('REG12384', 'Alex Turner', 'Oscilloscope', 'SN123456', 'On Loan'),
+('REG67890', 'Bob Johnson', 'Repeater', 'SN654321', 'Returned'),
+('REG54321', 'Wesley Brown', 'Solar Panel', 'SN987654', 'On Loan'),
+('REG98765', 'Emily Davis', 'Power Supply', 'SN456789', 'Returned'),
+('REG97531', 'Olivia Martinez', 'Router', 'SN864209', 'Returned'),
+('REG43210', 'James Anderson', 'Microwave Oven', 'SN321098', 'On Loan'),
+('REG10987', 'Sophia TheFirst', 'Apple Mac', 'SN210987', 'Returned');
+
+SELECT * FROM equipment_loans;
